@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>门店销售分析报告(仅零售部分)</title>
+<!-- Open Graph / WeChat Rich Link Card -->
+<meta property="og:title" content="门店销售分析报告(仅零售部分)">
+<meta property="og:description" content="&#383;&#38144;&#21806;&#32463;&#33829;&#20998;&#26512;&#25253;&#21578;&#65292;&#21253;&#21547;&#33829;&#38144;&#12289;&#24615;&#33021;&#12289;&#23458;&#25143;&#12289;&#21033;&#28070;&#31561;&#22810;&#32508;&#21512;&#35270;&#22270;&#65292;&#25903;&#25345;&#25163;&#26426;/&#30005;&#33041;&#1222;">
+<meta property="og:image" content="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYzMCIgdmlld0JveD0iMCAwIDEyMDAgNjMwIj4KICA8cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MzAiIGZpbGw9IiMwZDExMTciLz4KICA8cmVjdCB4PSI0MCIgeT0iNDAiIHdpZHRoPSIxMTIwIiBoZWlnaHQ9IjU1MCIgcng9IjE2IiBmaWxsPSIjMTYxYjIyIiBzdHJva2U9IiMyMTI2MmQiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjYwMCIgeT0iMjQwIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSI1NCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNlNmVkZjMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlNhbGVzIFBlcmZvcm1hbmNlIFJlcG9ydDwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjMxMCIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjYiIGZpbGw9IiM4Yjk0OWUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkRhdGEgVmlzdWFsaXphdGlvbiB8IEJ1c2luZXNzIEluc2lnaHRzPC90ZXh0PgogIDxyZWN0IHg9IjEwMCIgeT0iMzcwIiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjEzMCIgcng9IjEyIiBmaWxsPSIjMWMyMTI4IiBzdHJva2U9IiMzZmI5NTAiIHN0cm9rZS13aWR0aD0iMyIvPgogIDx0ZXh0IHg9IjIyMCIgeT0iNDM1IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMiIgZmlsbD0iIzNmYjk1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UmV2ZW51ZTwvdGV4dD4KICA8cmVjdCB4PSIzNzAiIHk9IjM3MCIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxMzAiIHJ4PSIxMiIgZmlsbD0iIzFjMjEyOCIgc3Ryb2tlPSIjNThhNmZmIiBzdHJva2Utd2lkdGg9IjMiLz4KICA8dGV4dCB4PSI0OTAiIHk9IjQzNSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiM1OGE2ZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkN1c3RvbWVyczwvdGV4dD4KICA8cmVjdCB4PSI2NDAiIHk9IjM3MCIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxMzAiIHJ4PSIxMiIgZmlsbD0iIzFjMjEyOCIgc3Ryb2tlPSIjZjA4ODNlIiBzdHJva2Utd2lkdGg9IjMiLz4KICA8dGV4dCB4PSI3NjAiIHk9IjQzNSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiNmMDg4M2UiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlByb2ZpdDwvdGV4dD4KICA8cmVjdCB4PSI5MTAiIHk9IjM3MCIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxMzAiIHJ4PSIxMiIgZmlsbD0iIzFjMjEyOCIgc3Ryb2tlPSIjYTM3MWY3IiBzdHJva2Utd2lkdGg9IjMiLz4KICA8dGV4dCB4PSIxMDMwIiB5PSI0MzUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjIyIiBmaWxsPSIjYTM3MWY3IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5UcmVuZHM8L3RleHQ+CiAgPHRleHQgeD0iNjAwIiB5PSI1NjAiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjNmU3NjgxIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbnRlcmFjdGl2ZSBEYXNoYm9hcmQgLSBBbGwgRGF0YSBFbmNyeXB0ZWQ8L3RleHQ+Cjwvc3ZnPg==">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://example.com/sales-report">
+<meta property="og:site_name" content="&#383;&#38144;&#21806;&#20998;&#26512;&#25253;&#21578;">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="门店销售分析报告(仅零售部分)">
+<meta name="twitter:description" content="&#383;&#38144;&#21806;&#20998;&#26512;&#25253;&#21578;">
+<meta name="twitter:image" content="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYzMCIgdmlld0JveD0iMCAwIDEyMDAgNjMwIj4KICA8cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MzAiIGZpbGw9IiMwZDExMTciLz4KICA8cmVjdCB4PSI0MCIgeT0iNDAiIHdpZHRoPSIxMTIwIiBoZWlnaHQ9IjU1MCIgcng9IjE2IiBmaWxsPSIjMTYxYjIyIiBzdHJva2U9IiMyMTI2MmQiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjYwMCIgeT0iMjQwIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSI1NCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNlNmVkZjMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlNhbGVzIFBlcmZvcm1hbmNlIFJlcG9ydDwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjMxMCIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjYiIGZpbGw9IiM4Yjk0OWUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkRhdGEgVmlzdWFsaXphdGlvbiB8IEJ1c2luZXNzIEluc2lnaHRzPC90ZXh0PgogIDxyZWN0IHg9IjEwMCIgeT0iMzcwIiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjEzMCIgcng9IjEyIiBmaWxsPSIjMWMyMTI4IiBzdHJva2U9IiMzZmI5NTAiIHN0cm9rZS13aWR0aD0iMyIvPgogIDx0ZXh0IHg9IjIyMCIgeT0iNDM1IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMiIgZmlsbD0iIzNmYjk1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UmV2ZW51ZTwvdGV4dD4KICA8cmVjdCB4PSIzNzAiIHk9IjM3MCIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxMzAiIHJ4PSIxMiIgZmlsbD0iIzFjMjEyOCIgc3Ryb2tlPSIjNThhNmZmIiBzdHJva2Utd2lkdGg9IjMiLz4KICA8dGV4dCB4PSI0OTAiIHk9IjQzNSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiM1OGE2ZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkN1c3RvbWVyczwvdGV4dD4KICA8cmVjdCB4PSI2NDAiIHk9IjM3MCIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxMzAiIHJ4PSIxMiIgZmlsbD0iIzFjMjEyOCIgc3Ryb2tlPSIjZjA4ODNlIiBzdHJva2Utd2lkdGg9IjMiLz4KICA8dGV4dCB4PSI3NjAiIHk9IjQzNSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiNmMDg4M2UiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlByb2ZpdDwvdGV4dD4KICA8cmVjdCB4PSI5MTAiIHk9IjM3MCIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxMzAiIHJ4PSIxMiIgZmlsbD0iIzFjMjEyOCIgc3Ryb2tlPSIjYTM3MWY3IiBzdHJva2Utd2lkdGg9IjMiLz4KICA8dGV4dCB4PSIxMDMwIiB5PSI0MzUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjIyIiBmaWxsPSIjYTM3MWY3IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5UcmVuZHM8L3RleHQ+CiAgPHRleHQgeD0iNjAwIiB5PSI1NjAiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjNmU3NjgxIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbnRlcmFjdGl2ZSBEYXNoYm9hcmQgLSBBbGwgRGF0YSBFbmNyeXB0ZWQ8L3RleHQ+Cjwvc3ZnPg==">
+
+
+<script src="https://cdn.plot.ly/plotly-2.35.3.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#0d1117;
+  --card:#161b22;
+  --card2:#1c2128;
+  --border:#21262d;
+  --border2:#30363d;
+  --text:#e6edf3;
+  --text2:#c9d1d9;
+  --text3:#8b949e;
+  --text4:#6e7681;
+  --blue:#58a6ff;
+  --green:#3fb950;
+  --orange:#f0883e;
+  --purple:#a371f7;
+  --red:#f85149;
+  --gold:#ffc107;
+}
+html{font-size:16px;}
+body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif;min-height:100vh;padding-bottom:90px;}
+a{color:var(--blue);text-decoration:none;}
+
+/* ─── Sticky Nav ─── */
+.nav-wrap{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);}
+.nav-header{padding:12px 16px 0;display:flex;align-items:center;gap:10px;}
+.nav-title{font-size:15px;font-weight:700;color:var(--blue);letter-spacing:1px;}
+.nav-badge{background:#1f6feb;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;}
+.nav-tabs{display:flex;overflow-x:auto;padding:8px 12px 0;gap:0;scrollbar-width:none;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.nav-tab{padding:8px 14px;font-size:13px;color:var(--text3);border-radius:8px 8px 0 0;border-bottom:2px solid transparent;transition:all .2s;flex-shrink:0;cursor:pointer;}
+.nav-tab.active{color:var(--blue);border-bottom-color:var(--blue);background:var(--card);font-weight:600;}
+.nav-tab:active{background:var(--card2);}
+
+/* ─── Section ─── */
+.section{padding:20px 16px;}
+.section-title{font-size:15px;font-weight:700;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-title::before{content:'';display:block;width:4px;height:16px;border-radius:2px;flex-shrink:0;}
+.s-blue::before{background:var(--blue);}
+.s-green::before{background:var(--green);}
+.s-orange::before{background:var(--orange);}
+.s-purple::before{background:var(--purple);}
+
+/* ─── KPI Cards ─── */
+.kpi-scroll{display:flex;overflow-x:auto;gap:10px;padding:0 16px 4px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.kpi-scroll::-webkit-scrollbar{display:none;}
+.kpi-card{min-width:130px;background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;position:relative;overflow:hidden;}
+.kpi-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--blue);}
+.kpi-card:nth-child(2)::after{background:var(--green);}
+.kpi-card:nth-child(3)::after{background:var(--orange);}
+.kpi-card:nth-child(4)::after{background:var(--purple);}
+.kpi-card:nth-child(5)::after{background:var(--red);}
+.kpi-card:nth-child(6)::after{background:var(--gold);}
+.kpi-card:nth-child(7)::after{background:var(--green);}
+.kpi-label{font-size:11px;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+.kpi-value{font-size:20px;font-weight:700;color:var(--text);line-height:1.2;}
+.kpi-sub{font-size:11px;color:var(--text4);margin-top:4px;}
+
+/* ─── Chart Box ─── */
+.chart-box{background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-bottom:12px;touch-action:pan-y;-webkit-overflow-scrolling:touch;overflow:hidden;}
+.chart-title{font-size:12px;color:var(--text3);margin-bottom:10px;font-weight:500;}
+
+/* ─── Analysis Box ─── */
+.analysis-box{background:var(--card2);border:1px solid var(--border2);border-left:3px solid var(--blue);border-radius:8px;padding:12px 14px;margin-top:12px;font-size:13px;line-height:1.8;color:#adbac7;}
+.analysis-box strong{color:var(--text2);}
+.g{color:var(--green);}
+.o{color:var(--orange);}
+.p{color:var(--purple);}
+.r{color:var(--red);}
+
+/* ─── Tables ─── */
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -16px;padding:0 16px;}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:500px;}
+th{background:#21262d;color:var(--text3);padding:10px 12px;text-align:left;font-weight:500;border-bottom:1px solid var(--border2);white-space:nowrap;position:sticky;top:0;}
+td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text2);}
+tr:last-child td{border-bottom:none;}
+tr:active td{background:var(--card2);}
+.t-right{text-align:right!important;}
+.t-green{color:var(--green)!important;}
+.t-red{color:var(--red)!important;}
+
+/* ─── Summary ─── */
+.summary-box{background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:16px;margin:0 16px 20px;}
+.summary-box h2{font-size:15px;color:var(--blue);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.summary-box h3{font-size:13px;color:var(--text2);margin:12px 0 6px;}
+.summary-box p{font-size:13px;color:#adbac7;line-height:1.8;margin-bottom:8px;}
+.summary-box ul{padding-left:18px;}
+.summary-box li{font-size:13px;color:#adbac7;line-height:1.8;}
+
+/* ─── Flex row cards ─── */
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* ─── Bottom bar ─── */
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:linear-gradient(to top,#0d1117 80%,transparent);padding:16px 16px 12px;display:flex;gap:10px;}
+.btn-share{flex:1;background:var(--blue);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(88,166,255,.35);transition:transform .15s;}
+.btn-share:active{transform:scale(.97);}
+.btn-copy{flex:1;background:var(--card);color:var(--text2);border:1px solid var(--border2);border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;}
+.btn-copy:active{background:var(--card2);}
+
+/* ─── Toast ─── */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:10px 24px;border-radius:24px;font-size:14px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;font-weight:600;box-shadow:0 4px 16px rgba(63,185,80,.4);}
+.toast.show{opacity:1;}
+
+/* ─── Loading ─── */
+.shimmer{background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.section.skeleton .chart-box{height:220px;border-radius:12px;}
+</style>
+</head>
+<body>
+
+<!-- Sticky Navigation -->
+<div class="nav-wrap" id="navWrap">
+  <div class="nav-header">
+    <div class="nav-title">📊 门店销售分析报告(仅零售部分)</div>
+  </div>
+  <div class="nav-tabs" id="navTabs">
+    <div class="nav-tab active" data-target="kpi">总览</div>
+    <div class="nav-tab" data-target="trend">趋势</div>
+    <div class="nav-tab" data-target="cat">品类</div>
+    <div class="nav-tab" data-target="brand">品牌</div>
+    <div class="nav-tab" data-target="profit">毛利</div>
+    <div class="nav-tab" data-target="supplier">供应</div>
+    <div class="nav-tab" data-target="tables">明细</div>
+    <div class="nav-tab" data-target="summary">总结</div>
+  </div>
+</div>
+
+<!-- KPI Overview -->
+<section class="section" id="kpi">
+  <div class="kpi-scroll" id="kpiScroll"></div>
+</section>
+
+<!-- 月度趋势 -->
+<section class="section" id="trend">
+  <div class="section-title s-green">月度销售与毛利趋势</div>
+  <div class="chart-box"><div id="chart_monthly_profit" style="width:100%;height:280px;"></div></div>
+  <div class="chart-box"><div id="chart_year_compare" style="width:100%;height:220px;"></div></div>
+  <div class="chart-box">
+    <div class="chart-title">周间销售分布</div>
+    <div id="chart_weekday_bar" style="width:100%;height:200px;"></div>
+  </div>
+  <div class="analysis-box">
+    <strong>分析：</strong>春节前后（1-3月）不仅是销售高峰，也是<strong class="g">毛利率最高时期</strong>（2月33.20%、3月37.25%），这是由于节庆礼盒、和单位购物卡集中消费拉高了销售和毛利。年度中旬的销售和毛利情况更能体现零售实际情况。
+   从月度销售折线图可以看出2026年销售高峰晚于去年，这是因为今年新年月份迟于去年，但峰值仍低于去年。说明零售业务有所下滑。（今年4月数据不全，无对比价值）
+</section>
+
+<!-- 品类分析 -->
+<section class="section" id="cat">
+  <div class="section-title">品类销售分析</div>
+  <div class="chart-box"><div id="chart_cat_bar" style="width:100%;height:280px;"></div></div>
+  <div class="analysis-box">
+    <strong>分析：</strong><strong>饮料、油米、香烟</strong>三大品类合计占比超45%，呈现典型的"头部效应"结构。其中油米由于有单位购物卡加持数据偏离零售统计，排除油米的话，饮料香烟占据销售主导地位，均为快消品分类，<span class="g">说明实际已偏离社区生活超市定位，应及时做出调整适应新的定位</span>。
+  </div>
+</section>
+
+<!-- 品牌销售 -->
+<section class="section" id="brand">
+  <div class="section-title">品牌销售排名 TOP20</div>
+  <div class="chart-box"><div id="chart_brand_sales" style="width:100%;height:340px;"></div></div>
+  <div class="chart-box"><div id="chart_product_bar" style="width:100%;height:300px;"></div></div>
+  <div class="analysis-box">
+    <strong>分析：</strong>TOP20品牌和商品排行，反映出门店<strong>头部依赖</strong>主要分两个方向，<span class="g">1.饮料烟酒类快消品；2.米油奶纸类民生品</span>（无条码商品销售是由于销售时未把商品过机销售而是手输金额收款产生的销售数据。如山姆代购未作资料销售时直接输金额收款，或其他收款时不扫商品只输金额的收款方式，这种操作习惯不规范，会导致统计缺失和库存混乱，应尽量避免。）
+  </div>
+</section>
+
+<!-- 毛利分析 -->
+<section class="section" id="profit">
+  <div class="section-title s-green">毛利率区间分布</div>
+  
+  <div class="chart-box"><div id="chart_profit_rank" style="width:100%;height:320px;"></div></div>
+  <div class="chart-box"><div id="chart_profit_rate_rank" style="width:100%;height:320px;"></div></div>
+  <div class="section-title s-green">毛利率区间分布</div>
+<div class="table-scroll">
+<table id="tbl_margin">
+<thead><tr><th>毛利率区间</th><th>毛利额(¥)</th><th>销售额(¥)</th><th>占比</th></tr></thead>
+<tbody></tbody>
+</table>
+</div>
+<div class="analysis-box">
+    <strong>分析：</strong><strong class="g">毛利率&gt;30%的商品贡献了50.4%的毛利</strong>（约¥55,831），包括特产干货、进口食品等。<span class="o">低毛利区间（&lt;15%）</span>约占10.3%，主要为香烟。
+    <strong class="g">罗甸生态米（100%）耗牛肉手撕牛肉干（100%）吃甘蔗的水牛奶（100%）豆客兴山海珍品（94%）、广州味道礼盒（84%）、高伏嶂花生油（83%）之所以出现这种极高毛利率产品，是因为团购商品退回店内零售未作正确的入库操作，导致成本为0，但此种情况相对一年多的销售影响有限，</strong><span class="o">毛利结果具备参考性。</span>
+  </div>
+</section>
+
+<!-- 供应商 -->
+<section class="section" id="supplier">
+  <div class="section-title s-orange">供应商销售排名 TOP10</div>
+  <div class="chart-box"><div id="chart_supplier" style="width:100%;height:280px;"></div></div>
+  <div class="analysis-box">
+    <strong>分析：</strong>相对销售排行可能受到福利卡和团购商品的影响，供应商排行就更能真实体现门店的进货销售情况，可以看出排在前五的分别是饮品、日化、烟草、零食、酒水，<span class="g">基本与销售统计相符</span>能够说明门店零售的真实经营情况。
+  </div>
+</section>
+
+<!-- 表格明细 -->
+<section class="section" id="tables">
+  <div class="section-title s-blue">月度汇总数据</div>
+  <div class="table-scroll">
+    <table id="tbl_monthly">
+      <thead><tr><th>月份</th><th>销售额</th><th>毛利</th><th>毛利率</th><th>销量</th><th>环比</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="section-title" style="margin-top:24px">商品销售明细 TOP20</div>
+  <div class="table-scroll">
+    <table id="tbl_product">
+      <thead><tr><th>#</th><th>品名</th><th>品类</th><th>销售额</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 总体总结 -->
+<section class="section" id="summary">
+  <div class="summary-box">
+    <h2>📋 分析总结</h2>
+
+    <h3>一、核心经营指标</h3>
+    <p>统计期间共 <strong id="sum_days">—</strong> 个经营日，累计销售额 <strong id="sum_total">—</strong> 元，月均约 <strong id="sum_monthly">—</strong> 元，日均约 <strong id="sum_daily">—</strong> 元。
+    总销售量 <strong id="sum_qty">—</strong> 件，退货率 <strong id="sum_ret_rate">—</strong>%。
+    <span style="color:var(--gold)">累计毛利 <strong id="sum_profit">—</strong> 元，综合毛利率 <strong id="sum_profit_rate">—</strong>%。</span></p>
+
+    <h3>二、毛利结构特征</h3>
+    <p>综合毛利率 <strong id="sum_profit_rate2">—</strong>，在便利店业态中处于<strong>中等偏上</strong>。高毛利商品（&gt;30%）贡献了50.4%的毛利，高毛利商品被团购0成本商品拉高的影响，实际高毛利占比应略低于此值，总体毛利分布合理略微高于行业，低毛利香烟虽毛利率低（约10%），但高周转仍贡献可观绝对毛利额。建议以<span class="g">"高毛利立档次、低毛利稳客群"</span>的组合策略优化品类结构。</p>
+
+    <h3>三、品类与品牌结构</h3>
+    <p>门店覆盖 <strong id="sum_cats">—</strong> 个品类，<strong>饮料、油米、香烟</strong>三大品类合计超45%，呈现快消品加民生品的两极结构。其他品类贡献度极差。建议围绕此特点做经营结构调整，淘汰弱势品类，强化饮品烟草快消品服务街客，强化油米特产礼盒等高端商品服务政企，<span class="g">顺应数据，合理调整，做差异化经营谋求出路</span>。</p>
+
+    
+    <h3>四、结语</h3>
+    <ul>
+      <li>规范操作，避免系统外的操作能够获得完整的数据记录，为调整和改善提供决策依据</li>
+      <li>经营结构调整，摒弃社区店定位，发力快消和民生两个方向，淘汰贡献小的品类，围绕服务好快消和政企两类核心人群为标准进行经营结构调整</li>
+      <li>以"高毛利立档次、低毛利稳客群"为选品定价依据，优化产品和价格结构</li>
+      
+    </ul>
+  </div>
+</section>
+
+<!-- Bottom Action Bar -->
+<div class="bottom-bar">
+  <button class="btn-share" id="btnShare">📤 分享链接</button>
+  <button class="btn-copy" id="btnCopy">📋 复制链接</button>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+var MONTHLY=[
+  {月:"24年12月",销售额:17332.4,毛利:4227.29,毛利率:24.39,销售量:1811,均价:9.57,环比:null},
+  {月:"25年01月",销售额:59623.56,毛利:16381.54,毛利率:27.47,销售量:3062,均价:19.47,环比:244.0},
+  {月:"25年02月",销售额:21187.64,毛利:7035.13,毛利率:33.20,销售量:1718,均价:12.33,环比:-64.46},
+  {月:"25年03月",销售额:20580.13,毛利:7666.00,毛利率:37.25,销售量:2068.22,均价:9.95,环比:-2.87},
+  {月:"25年04月",销售额:17482.92,毛利:4310.73,毛利率:24.66,销售量:1979.14,均价:8.83,环比:-15.05},
+  {月:"25年05月",销售额:26495.35,毛利:6474.74,毛利率:24.44,销售量:2800.7,均价:9.46,环比:51.55},
+  {月:"25年06月",销售额:24525.18,毛利:7050.35,毛利率:28.75,销售量:2565,均价:9.56,环比:-7.44},
+  {月:"25年07月",销售额:28903.85,毛利:5194.97,毛利率:17.97,销售量:8704.04,均价:3.32,环比:17.85},
+  {月:"25年08月",销售额:16646.98,毛利:3997.80,毛利率:24.02,销售量:2159.1,均价:7.71,环比:-42.41},
+  {月:"25年09月",销售额:34764.50,毛利:8976.15,毛利率:25.82,销售量:2322.18,均价:14.97,环比:108.83},
+  {月:"25年10月",销售额:36887.14,毛利:8921.61,毛利率:24.19,销售量:2633,均价:14.01,环比:6.11},
+  {月:"25年11月",销售额:19701.37,毛利:4252.53,毛利率:21.58,销售量:1901,均价:10.36,环比:-46.59},
+  {月:"25年12月",销售额:23765.26,毛利:4883.79,毛利率:20.55,销售量:2202,均价:10.79,环比:20.63},
+  {月:"26年01月",销售额:23845.54,毛利:4508.47,毛利率:18.91,销售量:2005,均价:11.89,环比:0.34},
+  {月:"26年02月",销售额:45044.03,毛利:8235.01,毛利率:18.28,销售量:1694,均价:26.59,环比:88.90},
+  {月:"26年03月",销售额:29007.67,毛利:5385.78,毛利率:18.57,销售量:5492,均价:5.28,环比:-35.60},
+  {月:"26年04月",销售额:4388.47,毛利:793.60,毛利率:18.08,销售量:533,均价:8.23,环比:-84.87}
+];
+var TOTAL_SALES=450181.99,TOTAL_QTY=45649.38,TOTAL_PROFIT=108295.49,PROFIT_RATE=24.04;
+var DAYS=469,MONTHLY_AVG=26481.29,DAILY_AVG=959.88;
+var TOTAL_RETURNS=1457.4,RETURN_RATE=0.32;
+var CAT_SALES=[
+  {c:"饮料",v:74890.63},{c:"油米",v:71897.29},{c:"香烟",v:56171.26},{c:"酒水",v:28460.2},
+  {c:"零食",v:28165.89},{c:"季节性食品",v:26292.04},{c:"清洁美妆",v:26244.63},
+  {c:"未分类",v:19846.58},{c:"家用清洁",v:19209.68},{c:"纸品",v:18244.04},
+  {c:"调味品",v:15682.57},{c:"粉面",v:10592.72},{c:"糖果",v:9992.73},
+  {c:"干货",v:8749.65},{c:"冷冻",v:8527.44},{c:"饼干糕点",v:7828.19},
+  {c:"家杂",v:5864.58},{c:"生鲜水产",v:2939.68},{c:"冷藏",v:2456.01},
+  {c:"饮品",v:2350.64},{c:"粮油",v:1665.0},{c:"山姆代购",v:1209.77},
+  {c:"冲调",v:1173.2},{c:"自编码",v:814.35},{c:"食品",v:441.2},
+  {c:"清美",v:272.0},{c:"婴幼儿用品",v:200.02}
+];
+var BRAND_SALES=[
+  {b:"双喜",v:20748.0},{b:"芙蓉王",v:13997.6},{b:"泰稷",v:13232.24},{b:"如丰",v:10153.45},
+  {b:"蒙牛",v:6788.79},{b:"燕塘",v:6668.49},{b:"鲁花",v:6165.89},{b:"维达",v:6162.44},
+  {b:"荷花",v:6091.3},{b:"中华",v:5805.0},{b:"王老吉",v:4602.22},{b:"农夫山泉",v:4473.18},
+  {b:"柔心美",v:4470.73},{b:"娃哈哈",v:4329.97},{b:"芭菲",v:4201.24},{b:"人头马",v:3869.4},
+  {b:"创奕",v:3512.26},{b:"伊利",v:3486.6},{b:"华洋",v:3298.23},{b:"红牛",v:3256.3}
+];
+var PRODUCT_SALES=[
+  {n:"无码商品",c:"未分类",v:18236.38,q:6730},
+  {n:"双喜(硬红五叶神)",c:"香烟",v:13788,q:693},
+  {n:"5L鲁花压榨一级花生油",c:"油米",v:6165.89,q:39},
+  {n:"特仑苏纯奶",c:"饮料",v:5960.13,q:126},
+  {n:"钻石荷花烟(粗)",c:"香烟",v:5731.3,q:155},
+  {n:"芙蓉王(硬)",c:"香烟",v:5520,q:230},
+  {n:"5L泰稷纯正花生油",c:"油米",v:5469.6,q:40},
+  {n:"芙蓉王(硬闪带细支)",c:"香烟",v:4042.6,q:119},
+  {n:"柔心美92抽八包抽纸",c:"纸品",v:3144.26,q:295},
+  {n:"条-中华(双中支)",c:"香烟",v:3030,q:6},
+  {n:"丹麦蓝罐曲奇",c:"季节性食品",v:3028.6,q:25},
+  {n:"5KG泰稷顶上丝苗米",c:"油米",v:2930.23,q:49},
+  {n:"500ML东鹏",c:"饮料",v:2858.71,q:575},
+  {n:"250ML燕塘酸奶原味",c:"饮料",v:2760.96,q:69},
+  {n:"新穗白水丝苗米5kg",c:"油米",v:2245.92,q:47},
+  {n:"王富来一级腊肠500g",c:"干货",v:2201.62,q:27},
+  {n:"新鲜鸡蛋30枚",c:"生鲜水产",v:2163.98,q:148},
+  {n:"新穗增城丝苗米5KG",c:"油米",v:2147.6,q:30},
+  {n:"5L挂荔花生油(橙瓶)",c:"油米",v:2105.3,q:16},
+  {n:"500ml黑罐珠江纯生",c:"酒水",v:2067.5,q:383}
+];
+var PROFIT_TOP20=[
+  {n:"双喜(硬红五叶神)",v:14757.09,p:1543.55,r:10.80},
+  {n:"大湾灶基特制头抽1.9L",v:1960.53,p:1201.53,r:61.28},
+  {n:"新穗白水丝苗米5kg",v:2245.92,p:1181.92,r:52.62},
+  {n:"豆客兴山海珍品380克",v:1217.61,p:1148.61,r:94.33},
+  {n:"5L泰稷纯正花生油",v:5469.60,p:1144.04,r:20.92},
+  {n:"特仑苏纯奶",v:5960.13,p:1128.58,r:18.93},
+  {n:"广州味道礼盒",v:1244.31,p:1050.02,r:84.38},
+  {n:"粤贵坊纯正花生油5L",v:1803.72,p:999.72,r:55.42},
+  {n:"596ml娃哈哈水",v:1847.45,p:960.93,r:52.01},
+  {n:"高伏嶂花生油5升",v:1640.20,p:905.20,r:55.19},
+  {n:"新穗增城丝苗米5KG",v:2147.60,p:887.60,r:41.34},
+  {n:"罗甸生态大米5kg",v:878.00,p:878.00,r:100},
+  {n:"牦牛肉手撕牛肉干250g",v:874.93,p:874.93,r:100},
+  {n:"挂荔增城丝苗米5KG(红）",v:1292.74,p:814.42,r:62.99},
+  {n:"500ML东鹏",v:2858.71,p:811.89,r:28.40},
+  {n:"新鲜土鸡蛋(单枚)",v:2937.88,p:743.57,r:25.31},
+  {n:"5L鲁花压榨一级花生油",v:6165.89,p:720.89,r:11.69},
+  {n:"王富来一级腊肠500g",v:2201.62,p:698.94,r:31.75},
+  {n:"5L挂荔花生油(橙瓶)",v:2105.30,p:697.30,r:33.12},
+  {n:"吃甘蔗的水牛奶10支",v:674.58,p:674.58,r:100}
+];
+var MARGIN_DIST=[
+  {l:"0-10%",profit:3490.08,sales:34901.00},
+  {l:"10-15%",profit:7859.36,sales:58876.00},
+  {l:"15-20%",profit:11528.83,sales:64268.00},
+  {l:"20-25%",profit:16357.45,sales:66885.00},
+  {l:"25-30%",profit:15630.01,sales:55796.00},
+  {l:">30%",profit:55831.68,sales:175804.00}
+];
+var WEEKDAY_AVG=[1038.53,813.43,837.91,925.01,930.69,1171.68,1001.68];
+var WEEKDAY_NAMES=["周一","周二","周三","周四","周五","周六","周日"];
+var SUPPLIER=[
+  {n:"与朗商贸",v:60820.99},{n:"增城永权百货",v:45504.52},{n:"广东烟草",v:40189.6},
+  {n:"广惠副食",v:39650.66},{n:"增城艺珑百货店",v:20782.5},{n:"汇通行",v:20435.99},
+  {n:"朗福牛奶批发",v:18614.03},{n:"禾力创(浩培)",v:18244.04},{n:"新塘粮所",v:17840.25},
+  {n:"民力粮油经营部",v:13647.02}
+];
+
+// ═══════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════
+function fmt(v){if(v==null||isNaN(v))return'—';return'¥'+v.toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function pct(v){if(v==null||isNaN(v))return'—';return v.toFixed(2)+'%';}
+function num(v){return v.toLocaleString('zh-CN',{maximumFractionDigits:0});}
+
+var DARK={paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{color:'#8b949e',family:'PingFang SC,Microsoft YaHei'},margin:{t:20,r:10,b:40,l:10}};
+var GRID={color:'#21262d'};
+var PALETTE=['#58a6ff','#3fb950','#f0883e','#a371f7','#f85149','#39d353','#79c0ff','#d29922','#bc8cff','#ffa198'];
+
+// ═══════════════════════════════════════════════
+// KPI CARDS
+// ═══════════════════════════════════════════════
+var kpiHTML=[
+  {label:'总销售额',val:fmt(TOTAL_SALES),sub:'月均 '+fmt(MONTHLY_AVG)},
+  {label:'总毛利',val:fmt(TOTAL_PROFIT),sub:'综合 '+pct(PROFIT_RATE)},
+  {label:'日均毛利',val:fmt(TOTAL_PROFIT/DAYS),sub:'月均 '+fmt(TOTAL_PROFIT/17)},
+  {label:'总销售量',val:num(TOTAL_QTY),sub:'件商品'},
+  {label:'客单价',val:fmt(TOTAL_SALES/TOTAL_QTY),sub:'件均参考'},
+  {label:'退货金额',val:fmt(TOTAL_RETURNS),sub:'退货率 '+pct(RETURN_RATE)},
+  {label:'经营天数',val:num(DAYS),sub:'覆盖 '+CAT_SALES.length+' 个品类'}
+];
+var kpiWrap=document.getElementById('kpiScroll');
+kpiHTML.forEach(function(k){
+  kpiWrap.innerHTML+='<div class="kpi-card"><div class="kpi-label">'+k.label+'</div><div class="kpi-value">'+k.val+'</div><div class="kpi-sub">'+k.sub+'</div></div>';
+});
+
+// ═══════════════════════════════════════════════
+// SUMMARY STATS
+// ═══════════════════════════════════════════════
+document.getElementById('sum_days').textContent=DAYS;
+document.getElementById('sum_total').textContent=fmt(TOTAL_SALES);
+document.getElementById('sum_monthly').textContent=fmt(MONTHLY_AVG);
+document.getElementById('sum_daily').textContent=fmt(DAILY_AVG);
+document.getElementById('sum_qty').textContent=num(TOTAL_QTY);
+document.getElementById('sum_ret_rate').textContent=pct(RETURN_RATE);
+document.getElementById('sum_cats').textContent=CAT_SALES.length;
+document.getElementById('sum_profit').textContent=fmt(TOTAL_PROFIT);
+document.getElementById('sum_profit_rate').textContent=pct(PROFIT_RATE);
+document.getElementById('sum_profit_rate2').textContent=pct(PROFIT_RATE);
+
+// ═══════════════════════════════════════════════
+// TABLES
+// ═══════════════════════════════════════════════
+var mtbody=document.querySelector('#tbl_monthly tbody');
+MONTHLY.forEach(function(r){
+  var cls=r.环比>0?'t-green':(r.环比<0?'t-red':'');
+  mtbody.innerHTML+='<tr><td>'+r.月+'</td><td class="t-right">'+fmt(r.销售额)+'</td><td class="t-right">'+fmt(r.毛利)+'</td><td class="t-right t-green">'+pct(r.毛利率)+'</td><td class="t-right">'+num(r.销售量)+'</td><td class="t-right '+cls+'">'+(r.环比!==null?pct(r.环比):'—')+'</td></tr>';
+});
+var ptbody=document.querySelector('#tbl_product tbody');
+PRODUCT_SALES.forEach(function(r,i){
+  ptbody.innerHTML+='<tr><td>'+(i+1)+'</td><td>'+r.n+'</td><td>'+r.c+'</td><td class="t-right">'+fmt(r.v)+'</td></tr>';
+});
+
+// ═══════════════════════════════════════════════
+// CHARTS
+// ═══════════════════════════════════════════════
+function makePlotly(id,data,layout){
+  var el=document.getElementById(id);
+  var w=el.clientWidth||el.offsetWidth||400;
+  var h=el.clientHeight||el.offsetHeight||280;
+  if(!layout)layout={};
+  layout.dragmode=false;
+  Plotly.newPlot(id,data,layout,{responsive:false,displayModeBar:false,scrollZoom:false,width:w,height:h});
+}
+
+
+// 1. 月度销售与毛利趋势
+makePlotly('chart_monthly_profit',[
+  {x:MONTHLY.map(function(r){return r.月;}),y:MONTHLY.map(function(r){return r.销售额;}),type:'bar',name:'销售额',marker:{color:'#58a6ff',opacity:0.85},hovertemplate:'%{x}<br>¥%{y:,.0f}<extra></extra>'},
+  {x:MONTHLY.map(function(r){return r.月;}),y:MONTHLY.map(function(r){return r.毛利;}),type:'scatter',mode:'lines+markers',name:'毛利额',line:{color:'#3fb950',width:2},marker:{color:'#3fb950',size:5},yaxis:'y2',hovertemplate:'%{x}<br>毛利¥%{y:,.0f}<extra></extra>'},
+  {x:MONTHLY.map(function(r){return r.月;}),y:MONTHLY.map(function(r){return r.毛利率;}),type:'scatter',mode:'lines+markers',name:'毛利率%',line:{color:'#f0883e',width:2,dash:'dot'},marker:{color:'#f0883e',size:5},yaxis:'y3',hovertemplate:'%{x}<br>%{y:.1f}%<extra></extra>'}
+],{
+  paper_bgcolor:'transparent',plot_bgcolor:'transparent',
+  font:{color:'#8b949e',family:'PingFang SC,Microsoft YaHei'},
+  margin:{t:10,r:50,b:50,l:10},
+  xaxis:{gridcolor:GRID.color,tickfont:{color:'#8b949e',size:10},tickangle:30},
+  yaxis:{title:{text:'销售额',font:{color:'#58a6ff',size:10}},gridcolor:GRID.color,tickfont:{color:'#8b949e',size:10},tickformat:',.0f',side:'left'},
+  yaxis2:{title:{text:'毛利',font:{color:'#3fb950',size:10}},gridcolor:'transparent',tickfont:{color:'#3fb950',size:10},overlaying:'y',side:'right'},
+  yaxis3:{title:{text:'毛利率%',font:{color:'#f0883e',size:10}},gridcolor:'transparent',tickfont:{color:'#f0883e',size:10},overlaying:'y',side:'right',anchor:'free',position:0.97,ticksuffix:'%'},
+  legend:{font:{color:'#8b949e',size:10},x:0.01,y:1.05,bgcolor:'rgba(0,0,0,0)'},
+  hovermode:'x unified',barmode:'group'
+});
+
+// 2. 年度月度对比
+var YC={2024:'#f0883e',2025:'#58a6ff',2026:'#3fb950'};
+var ym2024={m:[12],s:[17332.4]};
+var ym2025={m:[1,2,3,4,5,6,7,8,9,10,11,12],s:[59623.56,21187.64,20580.13,17482.92,26495.35,24525.18,28903.85,16646.98,34764.5,36887.14,19701.37,23765.26]};
+var ym2026={m:[1,2,3,4],s:[23845.54,45044.03,29007.67,4388.47]};
+var allM=[1,2,3,4,5,6,7,8,9,10,11,12];
+function buildT(ym,yr){
+  var full=allM.map(function(m){var idx=ym.m.indexOf(m);return idx>=0?ym.s[idx]:null;});
+  return{x:allM.map(function(m){return m+'月';}),y:full,type:'scatter',mode:'lines+markers',name:yr+'年',line:{color:YC[yr],width:2},marker:{color:YC[yr],size:5},connectgaps:false,hovertemplate:yr+'年%{x}<br>¥%{y:,.0f}<extra></extra>'};
+}
+makePlotly('chart_year_compare',[buildT(ym2024,2024),buildT(ym2025,2025),buildT(ym2026,2026)],{
+  ...DARK,
+  xaxis:{gridcolor:GRID.color,tickfont:{color:'#8b949e',size:10}},
+  yaxis:{gridcolor:GRID.color,tickfont:{color:'#8b949e',size:10}},
+  legend:{font:{color:'#8b949e',size:10},x:0.01,y:0.99,bgcolor:'rgba(0,0,0,0)'},
+  margin:{t:10,r:10,b:40,l:10}
+});
+
+// 3. 周间分布
+makePlotly('chart_weekday_bar',[{
+  x:WEEKDAY_NAMES,y:WEEKDAY_AVG,type:'bar',
+  marker:{color:WEEKDAY_AVG.map(function(v,i){return i>=5?'#58a6ff':'#79c0ff';})},
+  hovertemplate:'%{x}<br>¥%{y:,.0f}<extra></extra>'
+}],{...DARK,xaxis:{gridcolor:GRID.color,tickfont:{color:'#8b949e',size:11}},yaxis:{gridcolor:GRID.color,tickfont:{color:'#8b949e',size:10}},margin:{t:10,r:10,b:40,l:10}});
+
+// 5. 品类横向柱状图
+makePlotly('chart_cat_bar',[{
+  y:CAT_SALES.map(function(r){return r.c;}).slice(0,10).reverse(),
+  x:CAT_SALES.map(function(r){return r.v;}).slice(0,10).reverse(),
+  type:'bar',orientation:'h',marker:{color:'#58a6ff'},
+  hovertemplate:'%{y}<br>¥%{x:,.0f}<extra></extra>'
+}],{...DARK,xaxis:{gridcolor:GRID.color,tickfont:{color:'#8b949e',size:10}},yaxis:{tickfont:{color:'#8b949e',size:11}},margin:{t:10,r:10,b:40,l:90}});
+
+// 6. 品牌TOP20
+makePlotly('chart_brand_sales',[{
+  y:BRAND_SALES.map(function(r){return r.b;}).reverse(),
+  x:BRAND_SALES.map(function(r){return r.v;}).reverse(),
+  type:'bar',orientation:'h',
+  marker:{color:BRAND_SALES.map(function(r,i){return i<3?'#f0883e':'#58a6ff';}).reverse()},
+  hovertemplate:'%{y}<br>¥%{x:,.0f}<extra></extra>'
+}],{...DARK,xaxis:{gridcolor:GRID.color,tickfont:{color:'#8b949e',size:10}},yaxis:{tickfont:{color:'#8b949e',size:11}},margin:{t:10,r:10,b:40,l:80}});
+
+// 7. 商品TOP15
+makePlotly('chart_product_bar',[{
+  y:PRODUCT_SALES.map(function(r){return r.n;}).slice(0,15).reverse(),
+  x:PRODUCT_SALES.map(function(r){return r.v;}).slice(0,15).reverse(),
+  type:'bar',orientation:'h',
+  marker:{color:PRODUCT_SALES.map(function(r,i){return i<3?'#f0883e':'#58a6ff';}).slice(0,15).reverse()},
+  hovertemplate:'%{y}<br>¥%{x:,.0f}<extra></extra>'
+}],{...DARK,xaxis:{gridcolor:GRID.color,tickfont:{color:'#8b949e',size:10}},yaxis:{tickfont:{color:'#8b949e',size:10},automargin:true},margin:{t:10,r:10,b:40,l:160}});
+
+// 9. 毛利排名
+makePlotly('chart_profit_rank',[{
+  y:PROFIT_TOP20.map(function(r){return r.n;}).reverse(),
+  x:PROFIT_TOP20.map(function(r){return r.p;}).reverse(),
+  type:'bar',orientation:'h',
+  marker:{color:PROFIT_TOP20.map(function(r,i){return i<3?'#3fb950':'#58a6ff';}).reverse()},
+  hovertemplate:'%{y}<br>毛利¥%{x:,.0f}<extra></extra>'
+}],{...DARK,xaxis:{gridcolor:GRID.color,tickfont:{color:'#8b949e',size:10}},yaxis:{tickfont:{color:'#8b949e',size:10},automargin:true},margin:{t:10,r:10,b:40,l:160}});
+var sortedRate=PROFIT_TOP20.slice().sort(function(a,b){return b.r-a.r;});
+makePlotly('chart_profit_rate_rank',[{
+  y:sortedRate.map(function(r){return r.n;}).reverse(),
+  x:sortedRate.map(function(r){return r.r;}).reverse(),
+  type:'bar',orientation:'h',
+  marker:{color:sortedRate.map(function(r,i){return i<5?'#f0883e':'#ffa657';}).reverse()},
+  hovertemplate:'%{y}<br>%{x:.1f}%<extra></extra>'
+}],{...DARK,xaxis:{gridcolor:GRID.color,tickfont:{color:'#8b949e',size:10},ticksuffix:'%'},yaxis:{tickfont:{color:'#8b949e',size:10},automargin:true},margin:{t:10,r:10,b:40,l:160}});
+
+// 10. 供应商
+makePlotly('chart_supplier',[{
+  y:SUPPLIER.map(function(r){return r.n;}).reverse(),
+  x:SUPPLIER.map(function(r){return r.v;}).reverse(),
+  type:'bar',orientation:'h',
+  marker:{color:SUPPLIER.map(function(r,i){return i<3?'#f0883e':'#58a6ff';}).reverse()},
+  hovertemplate:'%{y}<br>¥%{x:,.0f}<extra></extra>'
+}],{...DARK,xaxis:{gridcolor:GRID.color,tickfont:{color:'#8b949e',size:10}},yaxis:{tickfont:{color:'#8b949e',size:10}},margin:{t:10,r:10,b:40,l:130}});
+
+
+// Margin Distribution Table
+var mtbody2=document.getElementById('tbl_margin').querySelector('tbody');
+var totalProfit2=MARGIN_DIST.reduce(function(s,r){return s+r.profit;},0);
+MARGIN_DIST.forEach(function(r,i){
+  var pct=(r.profit/totalProfit2*100).toFixed(1);
+  var cls=i>=4?'t-green':(i<=1?'t-red':'t-orange');
+  mtbody2.innerHTML+='<tr><td>'+r.l+'</td><td class="t-right">'+fmt(r.profit)+'</td><td class="t-right">'+fmt(r.sales)+'</td><td class="t-right '+cls+'">'+pct+'%</td></tr>';
+});
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+document.querySelectorAll('.nav-tab').forEach(function(tab){
+  tab.addEventListener('click',function(){
+    document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});
+    this.classList.add('active');
+    var target=document.getElementById(this.dataset.target);
+    if(target){
+      var navH=document.getElementById('navWrap').offsetHeight;
+      var top=target.offsetTop-navH-5;
+      window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+    }
+  });
+});
+
+// Highlight active tab on scroll
+var sections=document.querySelectorAll('section[id]');
+window.addEventListener('scroll',function(){
+  var navH=document.getElementById('navWrap').offsetHeight;
+  var scrollY=window.scrollY;
+  sections.forEach(function(sec){
+    if(scrollY>=sec.offsetTop-navH-100){
+      document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});
+      var match=document.querySelector('.nav-tab[data-target="'+sec.id+'"]');
+      if(match)match.classList.add('active');
+    }
+  });
+});
+
+// ═══════════════════════════════════════════════
+// SHARE / COPY
+// ═══════════════════════════════════════════════
+var REPORT_URL=location.href;
+
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2200);
+}
+
+document.getElementById('btnShare').addEventListener('click',function(){
+  if(navigator.share){
+    navigator.share({title:'门店销售分析报告',text:'含毛利分析，点击查看详情',url:REPORT_URL}).catch(function(){});
+  }else{
+    showToast('已在浏览器打开，可直接分享此页面');
+  }
+});
+
+document.getElementById('btnCopy').addEventListener('click',function(){
+  navigator.clipboard.writeText(REPORT_URL).then(function(){
+    showToast('链接已复制到剪贴板');
+  }).catch(function(){
+    showToast('复制失败，请手动复制地址栏');
+  });
+});
+</script>
+</body>
+</html>
