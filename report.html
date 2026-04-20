@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>团购销售分析报告</title>
+    <meta name="description" content="2025-2026年团购销售数据分析报告，涵盖节庆、品类、客户、供应商等多维度分析">
+    <meta property="og:title" content="团购销售分析报告">
+    <meta property="og:description" content="2025-2026年团购销售数据分析报告，涵盖节庆、品类、客户、供应商等多维度分析">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://shmily86314-byte.github.io/sales-report/cover.png">
+    <meta property="og:image:width" content="400">
+    <meta property="og:image:height" content="300">
+    <meta property="og:site_name" content="团购销售分析">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="团购销售分析报告">
+    <meta name="twitter:description" content="2025-2026年团购销售数据分析报告，涵盖节庆、品类、客户、供应商等多维度分析">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #161b22 0%, #21262d 50%, #30363d 100%);
+            color: #f0f6fc;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid #30363d;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(88,166,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .header h1 { font-size: 32px; font-weight: 600; margin-bottom: 10px; position: relative; color: #f0f6fc; }
+        .header .subtitle { font-size: 16px; opacity: 0.7; position: relative; color: #8b949e; }
+        .header .update-tag {
+            display: inline-block;
+            background: rgba(88,166,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 10px;
+            color: #58a6ff;
+            border: 1px solid rgba(88,166,255,0.3);
+        }
+        
+        /* Cards */
+        .card {
+            background: #161b22;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid #30363d;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f0f6fc;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, #58a6ff 0%, #238636 100%);
+            border-radius: 2px;
+        }
+        
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .kpi-card {
+            background: #161b22;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #30363d;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            border-color: #58a6ff;
+        }
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+        .kpi-card.purple::before { background: linear-gradient(90deg, #a371f7 0%, #8957e5 100%); }
+        .kpi-card.green::before { background: linear-gradient(90deg, #238636 0%, #2ea043 100%); }
+        .kpi-card.orange::before { background: linear-gradient(90deg, #d29922 0%, #f0883e 100%); }
+        .kpi-card.blue::before { background: linear-gradient(90deg, #58a6ff 0%, #1f6feb 100%); }
+        
+        .kpi-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+            background: #21262d;
+        }
+        .kpi-card.purple .kpi-icon { color: #a371f7; }
+        .kpi-card.green .kpi-icon { color: #3fb950; }
+        .kpi-card.orange .kpi-icon { color: #f0883e; }
+        .kpi-card.blue .kpi-icon { color: #58a6ff; }
+        
+        .kpi-value { font-size: 28px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
+        .kpi-label { font-size: 14px; color: #8b949e; }
+        
+        /* Chart Container */
+        .chart-container { position: relative; height: 300px; margin: 20px 0; }
+        .chart-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; }
+        
+        /* Tables */
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        .data-table th {
+            background: #21262d;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #8b949e;
+            font-size: 13px;
+            border-bottom: 2px solid #30363d;
+        }
+        .data-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #21262d;
+            font-size: 14px;
+            color: #c9d1d9;
+        }
+        .data-table tr:hover { background: #21262d; }
+        .data-table .amount { font-weight: 600; color: #3fb950; }
+        .data-table .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .tag-primary { background: rgba(88,166,255,0.15); color: #58a6ff; }
+        .tag-success { background: rgba(35,134,54,0.15); color: #3fb950; }
+        .tag-warning { background: rgba(210,153,34,0.15); color: #d29922; }
+        
+        /* Top3 Section */
+        .top3-section { margin-bottom: 30px; }
+        .top3-header {
+            background: linear-gradient(135deg, #21262d 0%, #30363d 100%);
+            color: #f0f6fc;
+            padding: 20px 24px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #30363d;
+            border-bottom: none;
+        }
+        .top3-header h3 { font-size: 18px; font-weight: 600; }
+        .top3-stats { display: flex; gap: 24px; }
+        .top3-stat { text-align: center; }
+        .top3-stat-value { font-size: 20px; font-weight: 700; color: #f0f6fc; }
+        .top3-stat-label { font-size: 12px; opacity: 0.7; color: #8b949e; }
+        .top3-content {
+            background: #161b22;
+            border-radius: 0 0 12px 12px;
+            padding: 24px;
+            border: 1px solid #30363d;
+            border-top: none;
+        }
+        
+        /* Progress Bars for Price Distribution */
+        .price-dist { margin-top: 16px; }
+        .price-item { margin-bottom: 12px; }
+        .price-label { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: #c9d1d9; }
+        .price-bar-bg { background: #21262d; border-radius: 4px; height: 8px; overflow: hidden; }
+        .price-bar { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
+        
+        /* Insights */
+        .insights { background: #0d1117; border-radius: 12px; padding: 20px; margin-top: 20px; border: 1px solid #30363d; }
+        .insights h4 { font-size: 14px; color: #8b949e; margin-bottom: 12px; }
+        .insights ul { list-style: none; }
+        .insights li { 
+            padding: 8px 0; 
+            padding-left: 20px; 
+            position: relative;
+            font-size: 14px;
+            color: #c9d1d9;
+        }
+        .insights li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #58a6ff;
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #6e7681;
+            font-size: 13px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 12px; }
+            .header { padding: 30px 20px; }
+            .header h1 { font-size: 24px; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .kpi-card { padding: 16px; }
+            .kpi-value { font-size: 20px; }
+            .chart-row { grid-template-columns: 1fr; }
+            .top3-stats { flex-direction: column; gap: 8px; }
+            .data-table { font-size: 12px; }
+            .data-table th, .data-table td { padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>团购销售分析报告 </h1>
+            <div class="subtitle">数据周期：2025年新年/2025年端午/2025年中秋/2026年新年 | 分析口径：商品采购成本</div>
+      
+        
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card purple">
+                <div class="kpi-icon">💰</div>
+                <div class="kpi-value">¥273.85万</div>
+                <div class="kpi-label">总销售额</div>
+            </div>
+            <div class="kpi-card green">
+                <div class="kpi-icon">📦</div>
+                <div class="kpi-value">454单</div>
+                <div class="kpi-label">订单总数</div>
+            </div>
+            <div class="kpi-card orange">
+                <div class="kpi-icon">👥</div>
+                <div class="kpi-value">62家</div>
+                <div class="kpi-label">服务客户</div>
+            </div>
+            <div class="kpi-card blue">
+                <div class="kpi-icon">🏷️</div>
+                <div class="kpi-value">227个</div>
+                <div class="kpi-label">SKU数量</div>
+            </div>
+        </div>
+
+        <!-- 节庆销售分析 -->
+        <div class="card">
+            <div class="card-title">节庆销售对比分析</div>
+            <div class="chart-row">
+                <div class="chart-container">
+                    <canvas id="festivalChart"></canvas>
+                </div>
+                <div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>节庆</th>
+                                <th>销售额</th>
+                                <th>销量</th>
+                                <th>客户数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="tag tag-primary">26年新年</span></td>
+                                <td class="amount">¥107.85万</td>
+                                <td>18,598</td>
+                                <td>17家</td>
+                            </tr>
+                            <tr>
+                                <td><span class="tag tag-success">25年中秋</span></td>
+                                <td class="amount">¥71.53万</td>
+                                <td>17,017</td>
+                                <td>27家</td>
+                            </tr>
+                            <tr>
+                                <td><span class="tag tag-warning">25年新年</span></td>
+                                <td class="amount">¥64.02万</td>
+                                <td>14,050</td>
+                                <td>26家</td>
+                            </tr>
+                            <tr>
+                                <td><span class="tag">25年端午</span></td>
+                                <td class="amount">¥30.46万</td>
+                                <td>10,576</td>
+                                <td>24家</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="insights">
+                        <h4>💡 节庆洞察</h4>
+                        <ul>
+                            <li>新年是团购绝对旺季，26年新年销售额突破百万，较25年新年增长68.4%</li>
+                            <li>26年新年客户仅17家，较25年新年客户数下降了29.1%销售额，客户集中度较高，说明客户质量显著提升，同时需警惕客户流失。</li>
+                            <li>中秋客户数和商品品类最多，节日礼赠需求旺盛，需注意优化礼品种类。</li>
+                           
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 品类销售分析 -->
+        <div class="card">
+            <div class="card-title">品类销售分析</div>
+            <div class="chart-row">
+                <div class="chart-container">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+                <div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>品类</th>
+                                <th>销售额</th>
+                                <th>销量</th>
+                                <th>客户数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>食用油</td><td class="amount">¥67.61万</td><td>8,084</td><td>36家</td></tr>
+                            <tr><td>零食/糕点</td><td class="amount">¥66.85万</td><td>13,034</td><td>26家</td></tr>
+                            <tr><td>粮食类</td><td class="amount">¥39.19万</td><td>9,391</td><td>33家</td></tr>
+                            <tr><td>坚果/干货</td><td class="amount">¥35.14万</td><td>7,667</td><td>22家</td></tr>
+                            <tr><td>月饼</td><td class="amount">¥16.10万</td><td>1,806</td><td>18家</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="insights">
+                        <h4>💡 品类洞察</h4>
+                        <ul>
+                            <li>Top3品类(食用油、零食/糕点、粮食类)合计占比63.4%</li>
+                            <li>食用油、粮食类客户覆盖面最广，是团购刚需品类</li>
+                            <li>零食/糕点客单价高，新年礼赠首选，应优化该品类作为毛利贡献主力。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top3品类深度分析 -->
+        <div class="card">
+            <div class="card-title">Top3品类深度分析</div>
+            
+            <!-- 食用油 -->
+            <div class="top3-section">
+                <div class="top3-header">
+                    <h3>🥇 食用油 - 团购刚需品类</h3>
+                    <div class="top3-stats">
+                        <div class="top3-stat">
+                            <div class="top3-stat-value">¥67.61万</div>
+                            <div class="top3-stat-label">销售额</div>
+                        </div>
+                        <div class="top3-stat">
+                            <div class="top3-stat-value">27个</div>
+                            <div class="top3-stat-label">SKU</div>
+                        </div>
+                        <div class="top3-stat">
+                            <div class="top3-stat-value">36家</div>
+                            <div class="top3-stat-label">客户</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="top3-content">
+                    <div class="chart-row">
+                        <div>
+                            <h4 style="margin-bottom:16px;font-size:14px;color:#8b949e;">热销单品Top10</h4>
+                            <table class="data-table">
+                                <thead>
+                                    <tr><th>单品</th><th>销售额</th><th>销量</th><th>进价</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>挂荔花生油5L</td><td class="amount">¥9.83万</td><td>1,117</td><td>¥88</td></tr>
+                                    <tr><td>千鲜香浓香压榨一级花生油</td><td class="amount">¥7.88万</td><td>1,189</td><td>¥66</td></tr>
+                                    <tr><td>花生油裸瓶</td><td class="amount">¥7.18万</td><td>1,072</td><td>¥67</td></tr>
+                                    <tr><td>泰稷花生油5L</td><td class="amount">¥6.90万</td><td>628</td><td>¥109</td></tr>
+                                    <tr><td>新穗花生油5L</td><td class="amount">¥5.37万</td><td>639</td><td>¥84</td></tr>
+                                    <tr><td>胡姬花古法花生油</td><td class="amount">¥4.32万</td><td>341</td><td>¥127</td></tr>
+                                    <tr><td>胡姬花古法花生油5L</td><td class="amount">¥4.04万</td><td>326</td><td>¥124</td></tr>
+                                    <tr><td>欧丽薇兰橄榄油</td><td class="amount">¥3.48万</td><td>497</td><td>¥70</td></tr>
+                                    <tr><td>金龙鱼花生油</td><td class="amount">¥2.43万</td><td>271</td><td>¥90</td></tr>
+                                    <tr><td>挂绿牌浓香花生油</td><td class="amount">¥2.38万</td><td>305</td><td>¥78</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom:16px;font-size:14px;color:#8b949e;">价格带分布</h4>
+                            <div class="price-dist">
+                                <div class="price-item">
+                                    <div class="price-label"><span>50-80元</span><span>39.9%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:39.9%;background:linear-gradient(90deg,#238636,#2ea043)"></div></div>
+                                </div>
+                                <div class="price-item">
+                                    <div class="price-label"><span>80-120元</span><span>44.4%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:44.4%;background:linear-gradient(90deg,#58a6ff,#1f6feb)"></div></div>
+                                </div>
+                                <div class="price-item">
+                                    <div class="price-label"><span>120-200元</span><span>15.5%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:15.5%;background:linear-gradient(90deg,#a371f7,#8957e5)"></div></div>
+                                </div>
+                                <div class="price-item">
+                                    <div class="price-label"><span>30-50元</span><span>0.2%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:0.2%;background:linear-gradient(90deg,#d29922,#f0883e)"></div></div>
+                                </div>
+                            </div>
+                            <div class="insights" style="margin-top:20px;">
+                                <h4>💡 食用油洞察</h4>
+                                <ul>
+                                    <li>油类的需求完全以花生油为主，占据Top10全部席位，消费习惯以本土花生油为主，品牌花生油需求较低</li>
+                                    <li>80-120元中高端产品占比44.4%，品质消费明显</li>
+                                    <li>千鲜香性价比款(¥67)销量最高(1,189件)，为主要毛利商品</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 零食/糕点 -->
+            <div class="top3-section">
+                <div class="top3-header" style="background:linear-gradient(135deg,#30363d 0%,#21262d 100%);">
+                    <h3>🥈 零食/糕点 - 新年礼赠首选</h3>
+                    <div class="top3-stats">
+                        <div class="top3-stat">
+                            <div class="top3-stat-value">¥66.85万</div>
+                            <div class="top3-stat-label">销售额</div>
+                        </div>
+                        <div class="top3-stat">
+                            <div class="top3-stat-value">39个</div>
+                            <div class="top3-stat-label">SKU</div>
+                        </div>
+                        <div class="top3-stat">
+                            <div class="top3-stat-value">26家</div>
+                            <div class="top3-stat-label">客户</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="top3-content">
+                    <div class="chart-row">
+                        <div>
+                            <h4 style="margin-bottom:16px;font-size:14px;color:#8b949e;">热销单品Top10</h4>
+                            <table class="data-table">
+                                <thead>
+                                    <tr><th>单品</th><th>销售额</th><th>销量</th><th>进价</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>丹麦蓝罐曲奇908g</td><td class="amount">¥17.83万</td><td>1,712</td><td>¥100</td></tr>
+                                    <tr><td>费列罗T24</td><td class="amount">¥9.99万</td><td>1,392</td><td>¥71</td></tr>
+                                    <tr><td>元朗蛋卷王</td><td class="amount">¥7.15万</td><td>1,349</td><td>¥53</td></tr>
+                                    <tr><td>徐福记新年糖礼盒</td><td class="amount">¥3.83万</td><td>857</td><td>¥46</td></tr>
+                                    <tr><td>十月初五六福礼盒</td><td class="amount">¥3.66万</td><td>827</td><td>¥44</td></tr>
+                                    <tr><td>如丰礼盒(10款含特曲头抽)</td><td class="amount">¥3.51万</td><td>390</td><td>¥90</td></tr>
+                                    <tr><td>诺梵松露金松露巧克力500g</td><td class="amount">¥2.88万</td><td>450</td><td>¥64</td></tr>
+                                    <tr><td>【旺旺】开心大礼包908g</td><td class="amount">¥2.31万</td><td>420</td><td>¥55</td></tr>
+                                    <tr><td>[洽洽]锦鲤纳福果礼1478g</td><td class="amount">¥2.22万</td><td>431</td><td>¥52</td></tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom:16px;font-size:14px;color:#8b949e;">价格带分布</h4>
+                            <div class="price-dist">
+                                <div class="price-item">
+                                    <div class="price-label"><span>50-80元</span><span>39.3%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:39.3%;background:linear-gradient(90deg,#238636,#2ea043)"></div></div>
+                                </div>
+                                <div class="price-item">
+                                    <div class="price-label"><span>80-120元</span><span>33.9%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:33.9%;background:linear-gradient(90deg,#58a6ff,#1f6feb)"></div></div>
+                                </div>
+                                <div class="price-item">
+                                    <div class="price-label"><span>30-50元</span><span>17.5%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:17.5%;background:linear-gradient(90deg,#a371f7,#8957e5)"></div></div>
+                                </div>
+                                <div class="price-item">
+                                    <div class="price-label"><span>0-30元</span><span>8.4%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:8.4%;background:linear-gradient(90deg,#d29922,#f0883e)"></div></div>
+                                </div>
+                                <div class="price-item">
+                                    <div class="price-label"><span>200元以上</span><span>0.9%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:0.9%;background:linear-gradient(90deg,#f85149,#da3633)"></div></div>
+                                </div>
+                            </div>
+                            <div class="insights" style="margin-top:20px;">
+                                <h4>💡 零食/糕点洞察</h4>
+                                <ul>
+                                    <li>丹麦蓝罐曲奇是绝对爆款，单品贡献26.7%品类销售额</li>
+                                    <li>针对爆款商品蓝罐、费列罗，可考虑在节前进行集中采购囤货，从而提高利润。</li>
+                                    <li>50-80元是主力价格带，占比39.3%销售额，应丰富该价格带商品选择</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 粮食类 -->
+            <div class="top3-section">
+                <div class="top3-header" style="background:linear-gradient(135deg,#1f6feb 0%,#58a6ff 100%);">
+                    <h3>🥉 粮食类 - 日常刚需品类</h3>
+                    <div class="top3-stats">
+                        <div class="top3-stat">
+                            <div class="top3-stat-value">¥39.19万</div>
+                            <div class="top3-stat-label">销售额</div>
+                        </div>
+                        <div class="top3-stat">
+                            <div class="top3-stat-value">21个</div>
+                            <div class="top3-stat-label">SKU</div>
+                        </div>
+                        <div class="top3-stat">
+                            <div class="top3-stat-value">33家</div>
+                            <div class="top3-stat-label">客户</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="top3-content">
+                    <div class="chart-row">
+                        <div>
+                            <h4 style="margin-bottom:16px;font-size:14px;color:#8b949e;">热销单品Top10</h4>
+                            <table class="data-table">
+                                <thead>
+                                    <tr><th>单品</th><th>销售额</th><th>销量</th><th>进价</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>增城丝苗米(定制)</td><td class="amount">¥12.89万</td><td>3,069</td><td>¥42</td></tr>
+                                    <tr><td>新穗白水丝苗米</td><td class="amount">¥5.05万</td><td>1,329</td><td>¥38</td></tr>
+                                    <tr><td>好福气米</td><td class="amount">¥3.63万</td><td>323</td><td>¥113</td></tr>
+                                    <tr><td>泰稷红丝苗米</td><td class="amount">¥3.39万</td><td>806</td><td>¥42</td></tr>
+                                    <tr><td>挂绿精选丝苗米</td><td class="amount">¥2.28万</td><td>623</td><td>¥36</td></tr>
+                                    <tr><td>邓记荔穗增乡丝苗米5kg/袋</td><td class="amount">¥2.08万</td><td>346</td><td>¥60</td></tr>
+                                    <tr><td>何仙姑丝苗米</td><td class="amount">¥1.92万</td><td>479</td><td>¥40</td></tr>
+                                    <tr><td>泰稷顶上丝苗米</td><td class="amount">¥1.25万</td><td>260</td><td>¥49</td></tr>
+                                    <tr><td>挂荔增城丝苗米</td><td class="amount">¥1.22万</td><td>298</td><td>¥41</td></tr>
+                                    <tr><td>泰稷丝苗米</td><td class="amount">¥1.20万</td><td>364</td><td>¥33</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom:16px;font-size:14px;color:#8b949e;">价格带分布</h4>
+                            <div class="price-dist">
+                                <div class="price-item">
+                                    <div class="price-label"><span>30-40元</span><span>40.0%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:40%;background:linear-gradient(90deg,#238636,#2ea043)"></div></div>
+                                </div>
+                                <div class="price-item">
+                                    <div class="price-label"><span>40-50元</span><span>42.0%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:42%;background:linear-gradient(90deg,#58a6ff,#1f6feb)"></div></div>
+                                </div>
+                                <div class="price-item">
+                                    <div class="price-label"><span>50-80元</span><span>6.7%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:6.7%;background:linear-gradient(90deg,#a371f7,#8957e5)"></div></div>
+                                </div>
+                                <div class="price-item">
+                                    <div class="price-label"><span>80-120元</span><span>9.3%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:9.3%;background:linear-gradient(90deg,#d29922,#f0883e)"></div></div>
+                                </div>
+                                <div class="price-item">
+                                    <div class="price-label"><span>0-30元</span><span>2.0%</span></div>
+                                    <div class="price-bar-bg"><div class="price-bar" style="width:2%;background:linear-gradient(90deg,#6e7681,#484f58)"></div></div>
+                                </div>
+                            </div>
+                            <div class="insights" style="margin-top:20px;">
+                                <h4>💡 粮食类洞察</h4>
+                                <ul>
+                                    <li>增城丝苗米定制款销量3,069件排名第一，为我司贴牌产品，主做产品差异和利润。</li>
+                                    <li>30-50元是主力价格带，占比82%（其中30-40元占40%，40-50元占42%）</li>
+                                    <li>丝苗米品类集中，本地品牌优势明显，极少流通品牌需求</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心客户分析 -->
+        <div class="card">
+            <div class="card-title">核心客户分析</div>
+            <div class="chart-row">
+                <div class="chart-container">
+                    <canvas id="customerChart"></canvas>
+                </div>
+                <div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>客户</th>
+                                <th>销售额</th>
+                                <th>销量</th>
+                                <th>参与节日</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>市场监督管理局</td><td class="amount">¥48.25万</td><td>8,993</td><td>3个</td></tr>
+                            <tr><td>派潭镇</td><td class="amount">¥33.67万</td><td>6,870</td><td>3个</td></tr>
+                            <tr><td>石滩卫生院</td><td class="amount">¥29.69万</td><td>5,696</td><td>4个</td></tr>
+                            <tr><td>九佛镇</td><td class="amount">¥21.61万</td><td>3,750</td><td>2个</td></tr>
+                            <tr><td>驭风旭</td><td class="amount">¥19.86万</td><td>2,232</td><td>1个</td></tr>
+                            <tr><td>朱村卫生院</td><td class="amount">¥12.12万</td><td>2,860</td><td>4个</td></tr>
+                            <tr><td>荔城中学</td><td class="amount">¥11.46万</td><td>2,973</td><td>2个</td></tr>
+                            <tr><td>郑中钧</td><td class="amount">¥8.23万</td><td>1,676</td><td>2个</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="insights">
+                        <h4>⚠️ 客户风险提示</h4>
+                        <ul>
+                            <li>Top3客户贡献40.7%销售额，客户集中度较高，需重点维护</li>
+                            <li>驭风旭为单节日客户，且单节日金额较大，需关注复购转化</li>
+                           
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 供应商分析 -->
+        <div class="card">
+            <div class="card-title">供应商分析</div>
+            <div class="chart-row">
+                <div class="chart-container">
+                    <canvas id="supplierChart"></canvas>
+                </div>
+                <div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>供应商</th>
+                                <th>销售额</th>
+                                <th>销量</th>
+                                <th>客户数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>怡亚通</td><td class="amount">¥45.85万</td><td>6,393</td><td>12</td></tr>
+                            <tr><td>粮所</td><td class="amount">¥37.18万</td><td>6,691</td><td>26</td></tr>
+                            <tr><td>广弘</td><td class="amount">¥30.48万</td><td>4,642</td><td>8</td></tr>
+                            <tr><td>汇通行</td><td class="amount">¥26.21万</td><td>5,422</td><td>20</td></tr>
+                            <tr><td>东莞福粮</td><td class="amount">¥16.24万</td><td>2,436</td><td>19</td></tr>
+                            <tr><td>淘鲜森</td><td class="amount">¥11.52万</td><td>1,742</td><td>13</td></tr>
+                            <tr><td>乐家</td><td class="amount">¥8.68万</td><td>2,152</td><td>12</td></tr>
+                            <tr><td>永权</td><td class="amount">¥6.60万</td><td>4,286</td><td>9</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="insights">
+                        <h4>💡 供应洞察</h4>
+                        <ul>
+                            <li>共58家供应商，怡亚通以¥45.85万位居首位</li>
+                            <li>粮所客户覆盖面最广(26家)，是粮食类主力供应商</li>
+                            <li>汇通行订单数最多(53单)，高频小额供应商</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结论与建议 -->
+        <div class="card">
+            <div class="card-title">结论与建议</div>
+            <div class="chart-row">
+                <div class="insights" style="margin:0;">
+                    <h4>📊 核心结论</h4>
+                    <ul>
+                        <li>新年是团购绝对旺季，26年新年销售额突破百万(¥107.85万)</li>
+                        <li>Top3品类(食用油、零食/糕点、粮食类)合计占比63.4%</li>
+                        <li>丹麦蓝罐曲奇是单品冠军，销售额¥17.83万</li>
+                        <li>政府单位是稳定大客户，市场局贡献17.6%销售额</li>
+                       
+                    </ul>
+                </div>
+                <div class="insights" style="margin:0;">
+                    <h4>💡 优化建议</h4>
+                    <ul>
+                        <li>加强新年档期备货，提前锁定曲奇、巧克力等爆款，集中采购锁定低成本货源</li>
+                
+                        <li>更高的营业额对应了更少的客户，客户质量提升的同时关注客户集中度风险，警惕客户流失风险</li>
+                        <li>税票账期的限制导致供应商过度集中，容易产生供应链风险，应提前做好财务计划才能有更多的供应来源选择</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>团购销售分析报告 | 数据已更新：品名和客户名标准化 | 生成时间：2026年4月</p>
+        </div>
+    </div>
+
+    <script>
+        // Chart.js 默认配置
+        Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif";
+        Chart.defaults.color = '#8b949e';
+        Chart.defaults.borderColor = '#30363d';
+
+        // 节庆销售图表
+        const festivalCtx = document.getElementById('festivalChart').getContext('2d');
+        new Chart(festivalCtx, {
+            type: 'bar',
+            data: {
+                labels: ['26年新年', '25年中秋', '25年新年', '25年端午'],
+                datasets: [{
+                    label: '销售额(万元)',
+                    data: [107.85, 71.53, 64.02, 30.46],
+                    backgroundColor: [
+                        'rgba(88, 166, 255, 0.8)',
+                        'rgba(35, 134, 54, 0.8)',
+                        'rgba(163, 113, 247, 0.8)',
+                        'rgba(210, 153, 34, 0.8)'
+                    ],
+                    borderRadius: 6,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#21262d' },
+                        ticks: { color: '#8b949e' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#c9d1d9' }
+                    }
+                }
+            }
+        });
+
+        // 品类销售图表
+        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+        new Chart(categoryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['食用油', '零食/糕点', '粮食类', '坚果/干货', '月饼', '其他'],
+                datasets: [{
+                    data: [67.61, 66.85, 39.19, 35.14, 16.10, 38.06],
+                    backgroundColor: [
+                        '#58a6ff',
+                        '#a371f7',
+                        '#238636',
+                        '#d29922',
+                        '#f0883e',
+                        '#6e7681'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { 
+                            usePointStyle: true, 
+                            padding: 15,
+                            color: '#c9d1d9'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 客户分析图表
+        const customerCtx = document.getElementById('customerChart').getContext('2d');
+        new Chart(customerCtx, {
+            type: 'bar',
+            data: {
+                labels: ['市场局', '派潭镇', '石滩卫生院', '九佛镇', '驭风旭'],
+                datasets: [{
+                    label: '销售额(万元)',
+                    data: [48.25, 33.67, 29.69, 21.61, 19.86],
+                    backgroundColor: 'rgba(35, 134, 54, 0.8)',
+                    borderRadius: 6,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: { color: '#21262d' },
+                        ticks: { color: '#8b949e' }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: '#c9d1d9' }
+                    }
+                }
+            }
+        });
+
+        // 供应商分析图表
+        const supplierCtx = document.getElementById('supplierChart').getContext('2d');
+        new Chart(supplierCtx, {
+            type: 'bar',
+            data: {
+                labels: ['怡亚通', '粮所', '广弘', '汇通行', '东莞福粮'],
+                datasets: [{
+                    label: '销售额(万元)',
+                    data: [45.85, 37.18, 30.48, 26.21, 16.24],
+                    backgroundColor: 'rgba(88, 166, 255, 0.8)',
+                    borderRadius: 6,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: { color: '#21262d' },
+                        ticks: { color: '#8b949e' }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: '#c9d1d9' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
